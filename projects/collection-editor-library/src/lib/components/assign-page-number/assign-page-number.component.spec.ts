@@ -49,6 +49,48 @@ describe('AssignPageNumberComponent', () => {
     spyOn(editorService, 'getToolbarConfig').and.returnValue({
       title: 'Observation Form'
     });
+    editorService.treeData = [
+      {
+        children:[
+          {
+            id:"1234"
+          }
+        ]
+      }
+    ]
+    component.treeData = editorService.treeData;
+    spyOn(editorService, 'getHierarchyObj').and.callFake(() => {
+      return {
+        '1234': {
+          children : []
+        }
+      };
+    });
+    spyOn(questionService, 'getQuestionList').and.returnValue(of({
+      result: {
+        questions: [
+          {
+            editorState: {
+              options: [
+                {
+                  answer: false,
+                  value: {
+                    body: '<p>Yes</p>',
+                    value: 0
+                  }
+                },
+              ],
+              question: '<p>Yes or No?</p>'
+            },
+            identifier: '1234',
+            languageCode: [
+              'en'
+            ]
+          }
+        ],
+        count: 1
+      }
+    }));
     component.toolbarConfig.title = 'Observation Form';
     component.ngOnInit();
     expect(component.toolbarConfig).toBeDefined();
