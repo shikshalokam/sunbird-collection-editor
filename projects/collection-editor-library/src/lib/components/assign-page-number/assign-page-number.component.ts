@@ -87,6 +87,19 @@ export class AssignPageNumberComponent implements OnInit {
     })
   }
 
+   reUseFunction() {
+    if (this.createArray.length === this.pageNumArray.length) {
+      this.createArray = this.pageNumArray;
+    } else if (this.pageNumArray.length > this.createArray.length) {
+      const result = this.pageNumArray.slice(0);
+      const newArray = result.splice.apply(result, [0, this.createArray.length].concat(this.createArray));
+      this.createArray = newArray;
+    } else {
+      const newArray = [...this.pageNumArray, ...this.createArray.slice(this.pageNumArray.length)]
+      this.createArray = newArray;
+    }
+   }
+
   onValueChange(event, question, index) {
     if (+event === 0) {
       let subjecObject = _.find(this.rendering_sequence?.sequence, (data) => {
@@ -111,16 +124,7 @@ export class AssignPageNumberComponent implements OnInit {
 
       const pageNumber = this.rendering_sequence.sequence.find(el => el.value === this.criteriaId)
       this.pageNumArray = pageNumber.pages;
-      if (this.createArray.length === this.pageNumArray.length) {
-        this.createArray = this.pageNumArray;
-      } else if (this.pageNumArray.length > this.createArray.length) {
-        const result = this.pageNumArray.slice(0);
-        const newArray = result.splice.apply(result, [0, this.createArray.length].concat(this.createArray));
-        this.createArray = newArray;
-      } else {
-        const newArray = [...this.pageNumArray, ...this.createArray.slice(this.pageNumArray.length)]
-        this.createArray = newArray;
-      }
+      this.reUseFunction();
       return true;
     }
 
@@ -139,16 +143,7 @@ export class AssignPageNumberComponent implements OnInit {
       for (let i = 0; i < Math.max(...this.numArray); i++) {
         this.createArray[i] = new Array();
       }
-      if (this.createArray.length === this.pageNumArray.length) {
-        this.createArray = this.pageNumArray;
-      } else if (this.pageNumArray.length > this.createArray.length) {
-        const result = this.pageNumArray.slice(0);
-        const newArray = result.splice.apply(result, [0, this.createArray.length].concat(this.createArray));
-        this.createArray = newArray;
-      } else {
-        const newArray = [...this.pageNumArray, ...this.createArray.slice(this.pageNumArray.length)]
-        this.createArray = newArray;
-      }
+      this.reUseFunction();
       this.pageNumArray = [];
     } else {
       for (let i = 0; i < Math.max(...this.numArray); i++) {
@@ -197,16 +192,7 @@ export class AssignPageNumberComponent implements OnInit {
 
     const pageNumber = this.rendering_sequence.sequence.find(el => el.value === this.criteriaId)
     this.pageNumArray = pageNumber.pages;
-    if (this.createArray.length === this.pageNumArray.length) {
-      this.createArray = this.pageNumArray;
-    } else if (this.pageNumArray.length > this.createArray.length) {
-      const result = this.pageNumArray.slice(0);
-      const newArray = result.splice.apply(result, [0, this.createArray.length].concat(this.createArray));
-      this.createArray = newArray;
-    } else {
-      const newArray = [...this.pageNumArray, ...this.createArray.slice(this.pageNumArray.length)]
-      this.createArray = newArray;
-    }
+    this.reUseFunction();
   }
 
   createSequence(data) {
